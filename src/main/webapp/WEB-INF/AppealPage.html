@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Subscribers</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="hometeacher.html" th:href="@{/GoToHomeTeacher(currentcourse=${course.id})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<h1><span th:text="${course.name} + ' appeal of: ' + ${appeal.date}">Default appeal date</span></h1>
+	<hr>
+	Welcome back <span th:text="${session.user.name}">Default teacher name</span>
+	<div th:if="${#lists.isEmpty(exams)}">
+		<span th:text="'No one partecipated to this appeal'">Default text</span>
+	</div>
+	<div th:if="${not #lists.isEmpty(exams)}">
+		<table>
+			<tr>
+				<td>
+					<h2>Results Table</h2>
+					<table border="1" th:class="appeal_table">
+						<thead>
+							<tr>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${1}, appealid=${appeal.id})}">Number</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${2}, appealid=${appeal.id})}">Surname</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${3}, appealid=${appeal.id})}">Name</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${4}, appealid=${appeal.id})}">Email</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${5}, appealid=${appeal.id})}">Degree</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${6}, appealid=${appeal.id})}">Mark</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${6}, appealid=${appeal.id})}">Laud</a></th>
+								<th><a href="/GoToAppeal" th:href="@{/GoToAppeal(currentstudent=${currentstudent}, order=${order}, columnindex=${7}, appealid=${appeal.id})}">Status</a></th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="e : ${exams}" th:id="(${e.student.id} == ${currentstudent}) ? 'currentstudent'" th:class="${e.evaluation.evaluationStatus}">
+								<td th:text="${e.student.number}">Default student number</td>
+								<td th:text="${e.student.surname}">Default student surname</td>
+								<td th:text="${e.student.name}">Default student name</td>
+								<td th:text="${e.student.email}">Default student email</td>
+								<td th:text="${e.student.degree}">Default student degree</td>
+								<td>
+									<div th:if="${e.evaluation.evaluationStatus.getValue() != 0} and ${e.evaluation.markStatus.getValue()} == 4" th:text="${e.evaluation.mark}">Default mark</div>
+									<div th:if="${e.evaluation.evaluationStatus.getValue() != 0} and ${e.evaluation.markStatus.getValue()} != 4" th:text="${e.evaluation.markStatus}">Default mark status</div>
+								</td>
+								<td>
+									<div th:if="${e.evaluation.evaluationStatus.getValue() != 0} and ${e.evaluation.markStatus.getValue()} == 4 and ${e.evaluation.mark} == 30">
+										<div th:switch="${e.evaluation.laud}">
+											<p th:case="true">L</p>
+											<p th:case="false"></p>
+											<p th:case="*">Empty field</p>
+										</div>
+									</div>
+									<div th:if="${e.evaluation.markStatus.getValue()} != 4" th:style="bold"></div>
+								</td>
+								<td th:text="${e.evaluation.evaluationStatus}"></td>
+								<td>
+									<div th:if="${e.evaluation.evaluationStatus.getValue()} == 0 or ${e.evaluation.evaluationStatus.getValue()} == 1">
+										<form action="#" th:action="@{/GoToSetMarkForm}" method="GET">
+											<input type="hidden" name="studentid" th:value="${e.student.id}">
+											<input type="hidden" name="examid" th:value="${e.id}">
+											<input type="submit" th:value="(${e.evaluation.evaluationStatus.getValue()} == 0) ? 'Insert' : 'Modify'" >
+										</form>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<form th:action="@{/PublishMarks}" method="POST">
+						<input type="hidden" name="appealid" th:value="${appeal.id}">
+						<input type="hidden" name="currentstudent" th:value="${currentstudent}">
+						<input type="submit" name="submit" value="Publish">
+					</form>
+					<form th:action="@{/CreateVerbal}" method="POST">
+						<input type="hidden" name="appealid" th:value="${appeal.id}">
+						<input type="hidden" name="currentstudent" th:value="${currentstudent}">
+						<input type="submit" name="submit" value="Create Verbal">
+					</form>
+				</td>
+				<td>
+					<table>
+						<thead>
+							<tr><th>Color</th></tr>
+						</thead>
+						<tbody>
+							<tr th:class="'NOT_INSERTED'"><td th:text="'NOT INSERTED'" ></td></tr>
+							<tr th:class="'INSERTED'"><td th:text="'INSERTED'" ></td></tr>
+							<tr th:class="'PUBLISHED'"><td th:text="'PUBLISHED'" ></td></tr>
+							<tr th:class="'REFUSED'"><td th:text="'REFUSED'" ></td></tr>
+							<tr th:class="'VERBALIZED'"><td th:text="'VERBALIZED'" ></td></tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<div th:id="'alertmessage'"th:if="${alert} == 1" th:text="'You cannot create verbal, there are no published or refused marks'"></div>
+		<div th:id="'alertmessage'"th:if="${alert} == 2" th:text="'You cannot publish marks, there are no inserted marks'"></div>
+		<br>
+		<hr>
+		<table th:if="${not #lists.isEmpty(verbals)}">
+			<thead>
+				<tr><th th:text="'Your verbals for the appeal of ' + ${appeal.date} + ' of ' + ${course.name}"></th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="v : ${verbals}">
+					<td><a href="gotoverbal" th:href="@{/GoToVerbal(verbalid=${v.id}, currentstudent=${currentstudent})}"><input type="button" th:value="'Verbal number ' + ${v.id} + ' created on ' + ${v.date}"/></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

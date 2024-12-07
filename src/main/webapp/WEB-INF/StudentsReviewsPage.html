@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="${course.name} ">Reviews</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:if="${currentcourse} == null" th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<div th:if="${currentcourse} != null" th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent(currentcourse=${currentcourse})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<div th:if="${currentcourse} == null" th:class="'menu'" align="right">
+		<a href="availablecourses.html" th:href="@{/GoToAvailableCourses}"><input type="button" th:value="'Go Back to Available Courses'"/></a>
+	</div>
+	<div th:if="${currentcourse} != null" th:class="'menu'" align="right">
+		<a href="availablecourses.html" th:href="@{/GoToAvailableCourses(currentcourse=${currentcourse})}"><input type="button" th:value="'Go Back to Available Courses'"/></a>
+	</div>
+	<h1 th:class="table_title"><span th:text="'Reviews of course: ' + ${course.name}"></span></h1>
+	<hr>
+	<div th:if="${#lists.isEmpty(reviewsdata.reviews)}">
+		<h2 th:text="${'There are no reviews for this course'}" th:class="table_title"></h2>
+	</div>
+	<div th:if="${not #lists.isEmpty(reviewsdata.reviews)}">
+		<h2 th:if="${reviewsdata.avgVote} >= 1" th:class="table_title">
+			<span th:text="'Average vote: ' + ${reviewsdata.avgVote} + '/5'"></span>
+			<meter min="0" max="5" optimum="5" low="2" high="3, 75" th:value="${reviewsdata.avgVote}"></meter>
+		</h2>
+		<h2 th:if="${reviewsdata.avgVote} < 1" th:class="table_title">
+			<span th:text="'Average vote not available'"></span>
+		</h2>
+		<table border="1" th:class="tiffany_table">
+			<thead>
+				<tr><th th:text="'Student'" colspan="2"></th><th th:text="'Review'" colspan="2"></th></tr>
+				<tr>
+					<th th:text="'Name'"></th>
+					<th th:text="'Degree'"></th>
+					<th th:text="'Review'"></th>
+					<th th:text="'Vote'"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${reviewsdata.reviews}">
+					<td th:text="${r.student.name}"></td>
+					<td th:text="${r.student.degree}"></td>
+					<td>
+						<div th:if="${not #strings.isEmpty(r.review)}" th:text="${r.review}"></div>
+						<div th:if="${#strings.isEmpty(r.review)}" th:text="${'N/A'}"></div>
+					</td>
+					<td>
+						<div th:if="${r.vote} >= 1 and ${r.vote <= 5}" th:text="${r.vote}"></div>
+						<div th:if="${r.vote} <= 0 or ${r.vote} > 5" th:text="${'N/A'}"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

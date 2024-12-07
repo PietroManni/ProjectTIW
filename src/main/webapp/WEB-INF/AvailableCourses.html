@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Available Courses</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:if="${subscribedcourse} == null and ${currentcourse} == null" th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<div th:if="${currentcourse} != null" th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent(currentcourse=${currentcourse})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<div th:if="${subscribedcourse} != null" th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent(currentcourse=${subscribedcourse.id})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<h1 th:class="table_title">Available Courses</h1>
+	<hr>
+	<div th:if="${#lists.isEmpty(courses)}"><h2 th:class="${'table_title'}">No courses available at the moment</h2></div>
+	<div th:if="${not #lists.isEmpty(courses)}">
+		<table border="1" th:class="${'tiffany_table'}">
+			<thead>
+				<tr>
+					<th th:text="${'Name'}"></th>
+					<th th:text="${'Teacher'}"></th>
+					<th th:text="${'Description'}"></th>
+					<th th:text="${'Cfus'}"></th>
+					<th th:text="${'Hours'}"></th>
+					<th th:text="${'Actions'}"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c : ${courses}" th:class="${cStat.even} ? 'even' : 'odd'">
+					<td th:text="${c.name}"></td>
+					<td th:text="${c.teacher.surname} + ' ' + ${c.teacher.name}"></td>
+					<td th:text="${c.description}"></td>
+					<td th:text="${c.cfu}"></td>
+					<td th:text="${c.hours}"></td>
+					<td>
+						<a th:if="${subscribedcourse} == null  and ${currentcourse} == null" th:href="@{/GoToStudentReviews(courseid=${c.id})}"><input type="button" th:value="'See Reviews'"/></a>
+						<a th:if="${subscribedcourse} != null" th:href="@{/GoToStudentReviews(courseid=${c.id}, currentcourse=${subscribedcourse.id})}"><input type="button" th:value="'See Reviews'"/></a>
+						<a th:if="${subscribedcourse} == null and ${currentcourse} != null" th:href="@{/GoToStudentReviews(courseid=${c.id}, currentcourse=${currentcourse})}"><input type="button" th:value="'See Reviews'"/></a><br>
+						<a th:href="@{/SubscribeToCourse(courseid=${c.id})}"><input type="button" th:value="'Subscribe'"/></a><br>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+	</div>
+	<fieldset th:if="${subscriptionsuccess} == 1 and ${subscribedcourse} != null" th:class="${'success'}">
+		<span th:text="'You successfully subscribed to the course: ' + ${subscribedcourse.name} + '. You will see the course between your courses in the '"></span>
+		<a href="homestudent" th:href="@{/GoToHomeStudent(currentcourse=${subscribedcourse.id})}">Home Page</a>
+	</fieldset>
+</body>
+</html>

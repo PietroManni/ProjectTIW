@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Set Mark Form Page</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="sidenav">
+		<div th:class="'menu'" align="right">
+			<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+		</div>
+		<div th:class="'menu'" align="right">
+			<a href="appeal.html" th:href="@{/GoToAppeal(appealid=${appealid}, currentstudent=${exam.student.id})}"><input type="button" th:value="'Go Back to Appeal'"/></a>
+		</div>
+		<div th:class="'menu'"align="right">
+			<a href="hometeacher.html" th:href="@{/GoToHomeTeacher(currentcourse=${courseid})}"><input type="button" th:value="'Go Back to Home'"/></a>
+		</div>
+	</div>
+	<h1 th:class="table_title"><span th:text="${coursename} + ' ' + ${date}"></span></h1>
+	<hr>
+	<h2 th:class="table_title"><span th:text="'Exam ID: ' + ${exam.id}"></span><br>
+		<span th:text="'Student: ' + ${exam.student.surname} + ' ' + ${exam.student.name}"></span><br>
+		<span th:text="'Student\'s number: ' + ${exam.student.number}"></span>
+	</h2>
+	<hr>
+	<table th:class="container">
+		<tr>
+			<td>
+				<table border="1" th:class="tiffany_table">
+					<thead>
+						<tr><th colspan=5>Student's data</th></tr>
+						<tr>
+							<th>Number</th>
+							<th>Surname</th>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Degree</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="${exam.student.number}">Default Student's number</td>
+							<td th:text="${exam.student.surname}">Default Student's surname</td>
+							<td th:text="${exam.student.name}">Default Student's name</td>
+							<td th:text="${exam.student.email}">Default Student's email</td>
+							<td th:text="${exam.student.degree}">Default Student's degree</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>
+				<form th:action="@{/SetMark}" method="POST">
+					<fieldset>
+						<legend>
+							<span th:if="${exam.evaluation.evaluationStatus.getValue()} == 0" th:text="'Insert Vote'"></span><!-- NOT_INSERTED -->
+							<span th:if="${exam.evaluation.evaluationStatus.getValue()} == 1" th:text="'Modify Vote'"></span><!-- INSERTED -->
+						</legend>
+						<div th:if="${exam.evaluation.evaluationStatus.getValue()} == 1"><!-- INSERTED -->
+							<span th:text="${'Current mark: '}"></span>
+							<span th:if="${exam.evaluation.markStatus.getValue()} == 4"><!-- If it's evaluated -->
+								<span th:text="${exam.evaluation.mark} + ((${exam.evaluation.laud} == ${true} and ${exam.evaluation.mark} == 30) ? 'L' : '')"></span>
+							</span>
+							<span th:if="${exam.evaluation.markStatus.getValue()} != 4"><!-- If it's evaluated -->
+								<span th:text="${exam.evaluation.markStatus}"></span>
+							</span>
+						</div>
+						<select name="mark">
+							<option th:text="${'30L'}" th:value="${'31'}"></option>
+							<option th:each="i : ${#numbers.sequence(30, 18)}" th:text="${i}" th:value="${i}"></option>
+							<option th:text="${'REPROVED'}" th:value="${'3'}"></option>
+							<option th:text="${'DEFERRED'}" th:value="${'2'}"></option>
+							<option th:text="${'ABSENT'}" th:value="${'1'}"></option>
+							<option th:text="${'EMPTY'}" th:value="${'0'}"></option>
+						</select>
+						<input type="hidden" name="examid" th:value="${exam.id}">
+						<input type="submit" name="submit" value="Set Mark">
+					</fieldset>
+				</form>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

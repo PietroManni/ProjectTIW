@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Teacher's Home</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<h1>Courses management</h1>
+	<h2>Welcome back <span th:text="${session.user.name}" >Default Teacher</span></h2>
+	<hr>
+	<div th:if="${courses} == null or ${#lists.isEmpty(courses)}">
+		<span>You have no courses at the moment</span>
+	</div>
+	<div th:if="${courses} != null and ${not #lists.isEmpty(courses)}">
+		<table>
+		<tr>
+			<td>
+				<table border="1">
+					<thead>
+						<tr>
+							<th>ID </th>
+							<th>Course</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="c : ${courses}" th:class="(${c.id} == ${currentcourse}) ? 'currentcourse'">
+							<td th:text="${c.id}"></td>
+							<td><a th:href="@{/GoToHomeTeacher(currentcourse=${c.id})}"><span th:text="${c.name}"></span></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</td>	
+			<td>
+				<div th:if="${#lists.isEmpty(appeals)}">
+					<span>No appeals available</span>
+				</div>
+				<div th:if="${not #lists.isEmpty(appeals)}">
+					<form th:action="@{/GoToAppeal}" method="GET">
+						<select name="appealid">
+						<option th:each="a : ${appeals}" th:value="${a.id}"
+							th:text="${a.date}">Default appeal</option>
+						</select> <br>
+						<input type="submit" value="Go to appeal" />
+					</form>
+				</div>
+				<div>
+					<form th:action="@{/GoToReviews}" method="GET">
+						<input type="hidden" name="courseid" th:value="${currentcourse}">
+						<input type="submit" value="Show Reviews">
+					</form>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</div>
+</body>
+</html>

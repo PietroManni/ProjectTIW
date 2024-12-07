@@ -1,0 +1,94 @@
+
+body {
+	background-color : white;
+}
+
+hr {
+	border : 1px solid #FC0FC0;
+}
+
+fieldset
+{
+	width: 300px;
+	margin:auto;
+	margin-top:30px;
+	border: 3px solid #39c;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+h1 {
+	text-align : center;
+	margin : auto;
+	width: 700px;
+}
+
+input[type=text] {
+  width: 200px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+  width: 100%;
+}
+
+input[type=password] {
+  width: 200px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  transition: width 0.7s ease-in-out;
+}
+
+input[type=password]:focus {
+  width: 100%;
+}
+
+input[type=submit] {
+	background-color : #39c;
+	color : white;
+	font-size : 12px;
+	border : 2px solid black;
+	border-radius : 8px;
+	opacity : 0.6;
+	transition-duration: 0.8s;
+	overflow: hidden;
+  	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	opacity: 1
+}
+
+input[type=submit]:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+#errormessage {
+	margin-top : 20px;
+	text-align : center;
+	font-weight : bold;
+}

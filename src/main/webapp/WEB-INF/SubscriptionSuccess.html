@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Subscription Confirmation Page</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="logout" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="results" th:href="@{/GoToResults(appealid=${appeal.id})}"><input type="button" th:value="'Go Back to Appeal Page'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="homestudent" th:href="@{/GoToHomeStudent(currentcourse=${course.id})}"><input type="button" th:value="'Go Back to Home Page'"/></a>
+	</div>
+	<h1 th:class="${'table_title'}"><span th:text="'Subscription successful'"></span></h1>
+	<hr>
+	<h2 th:class="${'table_title'}"><span th:text="'You have successfully subscribed to appeal of ' + ${appeal.date} + ' of ' + ${course.name}"></span></h2>
+</body>
+</html>

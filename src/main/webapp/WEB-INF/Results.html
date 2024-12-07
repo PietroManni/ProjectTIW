@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Results</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="homestudent.html" th:href="@{/GoToHomeStudent(currentcourse=${course.id})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<h1 th:class="${'table_title'}">Appeal of <span th:text="${appeal.date} + ' ' + ${course.name}"></span></h1>
+	<hr>
+	<div th:if="${exam} == null"><!-- Vote not_inserted or inserted -->
+		<h1 th:class="${'table_title'}">Result is not defined</h1>
+		<h2 th:class="${'table_title'}">Result will be available as soon as the teacher publishes it</h2>
+	</div>
+	<div th:if="${exam} != null"><!-- Vote published, refused or verbalized -->
+		<h2 th:class="${'table_title'}">Student Details</h2>
+		<table border="1" th:class="${'tiffany_table'}">
+			<thead>
+				<tr>
+					<th colspan=5>Student's Data</th>
+					<th colspan=5>Course Data</th>
+					<th>Appeal Data</th>
+					<th th:colspan="(${exam.evaluation.evaluationStatus.getValue()} == 3) ? 5 : 4">Result</th>
+				</tr>
+				 <tr>
+					<th>Number</th>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Email</th>
+					<th>Degree</th>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Cfus</th>
+					<th>Hours</th>
+					<th>Description</th>
+					<th>Date</th>
+					<th>Publication Status</th>
+					<th th:if="${exam.evaluation.markStatus.getValue()} != 4">Mark Status</th>
+					<th th:if="${exam.evaluation.markStatus.getValue()} == 4 or ${exam.evaluation.evaluationStatus.getValue()} == 3">Mark</th>
+					<th th:if="${exam.evaluation.markStatus.getValue()} == 4 or ${exam.evaluation.evaluationStatus.getValue()} == 3">Laud</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td th:text="${exam.student.number}">Default Number</td>
+					<td th:text="${exam.student.name}">Default Name</td>
+					<td th:text="${exam.student.surname}">Default Surname</td>
+					<td th:text="${exam.student.email}">Default Email</td>
+					<td th:text="${exam.student.degree}">Default Degree</td>
+					<td th:text="${course.id}">Default ID</td>
+					<td th:text="${course.name}">Default Course Name</td>
+					<td th:text="${course.cfu}">Default Course Cfu</td>
+					<td th:text="${course.hours}">Default Course Hours</td>
+					<td th:text="${course.description}">Default Course Description</td>
+					<td th:text="${appeal.date}">Default Date</td>
+					<td th:text="${exam.evaluation.evaluationStatus}">Default Publication Status</td>
+					<td th:if="${exam.evaluation.markStatus.getValue()} != 4"><!-- Show mark status when not EVALUATED -->
+						<div>
+							<span th:text="${exam.evaluation.markStatus}"></span>
+						</div>
+					</td>
+					<td th:if="${exam.evaluation.markStatus.getValue()} == 4 or ${exam.evaluation.evaluationStatus.getValue()} == 3"><!-- Show mark and laud when EVALUATED or REFUSED -->
+						<div>
+							<span th:text="${exam.evaluation.mark} "></span>
+						</div>
+					</td>
+					<td th:if="${exam.evaluation.markStatus.getValue()} == 4 or ${exam.evaluation.evaluationStatus.getValue()} == 3"><!-- Show mark and laud when EVALUATED or REFUSED -->
+						<div th:if="${exam.evaluation.laud} == ${true} and ${exam.evaluation.mark} == 30"><span>L</span></div>
+					</td>
+					<td>
+						<div th:if="${exam.evaluation.evaluationStatus.getValue()} == 2"><!-- If vote is PUBLISHED  -->
+							<div th:if="${exam.evaluation.markStatus.getValue()} == 4"><!-- If vote is published and between 18 and 30L show refuse button -->
+								<form action="#" th:action="@{/RefuseMark}" method="POST">
+									<input type="hidden" name="examid" th:value="${exam.id}">
+									<input type="submit" name="submit" value="Refuse">
+								</form>
+							</div>
+						</div>
+						<div th:if="${exam.evaluation.evaluationStatus.getValue()} == 3 "><!-- If vote is refused show message -->
+							<span th:text="'Vote Refused'"></span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

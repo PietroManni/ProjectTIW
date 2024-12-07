@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Verbal</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}"/>
+</head>
+<body>
+	<div th:class="'menu'" align="right">
+		<a href="login.html" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="appeal.html" th:href="@{/GoToAppeal(appealid = ${appeal.id}, currentstudent=${currentstudent})}"><input type="button" th:value="'Go Back to Appeal'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="hometeacher.html" th:href="@{/GoToHomeTeacher(currentcourse = ${course.id})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<h1 th:class="table_title">
+		<span th:text="'Verbal number ' + ${verbal.id}"></span><br>
+		<span th:text="${course.name} + ' appeal of ' + ${appeal.date}"></span>
+	</h1>
+	<hr>
+	<div th:if="${exams == null} or ${#lists.isEmpty(exams)}">
+		<h2 th:class="${'table_title'}" th:text="'No results registered for this verbal'"></h2>
+	</div>
+	<div th:if="${exams != null} and ${not #lists.isEmpty(exams)}">
+		<table border="1" th:class="center_table">
+			<thead>	
+				<tr><th colspan=5>Students' Data</th></tr>
+				<tr>
+					<th>Number</th>
+					<th>Surname</th>
+					<th>Name</th>
+					<th>Mark</th>
+					<th>Laud</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="exam : ${exams}" th:class="(${exam.evaluation.markStatus.getValue()} == ${4} and ${exam.evaluation.mark} >= ${18}) ? 'passed' : 'failed'">
+					<td th:text="${exam.student.number}">Default Student's Number</td>
+					<td th:text="${exam.student.surname}">Default Student's Surname</td>
+					<td th:text="${exam.student.name}">Default Student's Name</td>
+					<td>
+						<div th:if="${exam.evaluation.markStatus.getValue() == 4}" th:text="${exam.evaluation.mark}">Default Mark</div>
+						<div th:if="${exam.evaluation.markStatus.getValue() != 4}" th:text="${exam.evaluation.markStatus}"></div>
+					</td>
+					<td>
+						<div th:if="${exam.evaluation.markStatus.getValue()} == 4 and ${exam.evaluation.laud} == ${true} and ${exam.evaluation.mark} == 30" th:text="${'L'}">Default Laud</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table border="1" th:class="legend">
+			<thead>
+				<tr><th th:class="'passed'" th:text="${'PASSED'}"></th></tr>
+				<tr><th th:class="'failed'" th:text="${'FAILED'}"></th></tr>
+			</thead>
+		</table>
+	</div>
+	<div align="center" th:text="'Verbal created on ' + ${#dates.format(verbal.date, 'dd-MM-yyyy HH:mm')}"></div>
+</body>
+</html>

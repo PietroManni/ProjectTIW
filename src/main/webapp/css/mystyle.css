@@ -1,0 +1,282 @@
+body {
+	font-family : Verdana, sans-serif;
+	color : black;
+}
+
+label {
+	display : block;
+}
+
+textarea {
+	display : block;
+}
+
+table {
+	border-collapse : collapse;
+	background-color : white;
+}
+
+th {
+	background-color : #39c;
+	color : white;
+}
+
+table.tiffany_table {
+	border: 0.5rem outset pink;
+  	border-radius: 8px;
+  	font: 1rem  sans-serif;
+  	margin: 2rem;
+  	padding: 1rem;
+  	outline-offset: 0.5rem;  	
+  	height : 250px;
+  	width : 60%;
+
+  	margin-left: auto;
+    margin-right: auto;
+}
+
+table.tiffany_table, table.tiffany_table th, table.tiffany_table td {
+  	border: 2px solid white;
+  	border-collapse: collapse;
+}
+
+table.tiffany_table th, table.tiffany_table td {
+  	background-color: #39c;
+}
+
+table.center_table {
+	margin-top : 50px;
+	margin-left: auto;
+    margin-right: auto;
+    height : 150px;
+    width : 800px;
+}
+
+table.legend {
+	margin-left: auto;
+    margin-right: auto;
+    width : 800px;
+}
+
+table.container {
+	margin-left: 440px;
+    margin-right: auto;
+}
+
+table.container td {
+	text-align : center;
+}
+
+table.center_table td {
+	text-align : center;
+}
+
+h1.table_title {
+	text-align : center;
+}
+
+h2.table_title {
+	text-align : center;
+}
+
+select {
+	background-color : #39c;
+	color : white;
+	font-size : 12px;
+	border : 2px solid black;
+	border-radius : 8px;
+}
+
+input[type=submit] {
+	background-color : #39c;
+	color : white;
+	font-size : 12px;
+	border : 2px solid black;
+	border-radius : 8px;
+	opacity : 0.6;
+	transition-duration: 0.8s;
+	overflow: hidden;
+  	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	opacity: 1
+}
+
+input[type=submit]:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+input[type=button] {
+	background-color : #39c;
+	color : white;
+	font-size : 12px;
+	border : 2px solid black;
+	border-radius : 8px;
+	opacity : 0.6;
+	transition-duration: 0.8s;
+	overflow: hidden;
+  	cursor: pointer;
+}
+
+input[type=button]:hover {
+	opacity: 1
+}
+
+input[type=button]:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+span.table_title {
+	text-align : center;
+}
+
+tr.NOT_INSERTED {
+	background-color : #FF8C00;
+}
+
+tr.INSERTED {
+	background-color : #FFD700;
+}
+
+tr.PUBLISHED {
+	background-color : #7FFF00;
+}
+
+tr.REFUSED {
+	background-color : #FF4500;
+}
+
+tr.VERBALIZED {
+	background-color : #6CB4EE;
+}
+
+tr.failed {
+	background-color : #FF4500;
+}
+
+tr.passed {
+	background-color : #7FFF00;
+}
+
+th.failed {
+	background-color : #FF4500;
+}
+
+th.passed {
+	background-color : #7FFF00;
+}
+
+tr#currentstudent {
+	font-weight : bold;
+}
+
+tr.currentcourse {
+	background-color : #FC0FC0;
+}
+
+fieldset {
+	border: 3px solid #39c;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+fieldset.subscription {
+	height : 100%;
+	width : 90px;
+	border: 3px solid #39c;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+fieldset.subscription > a {
+	color : black;
+}
+
+fieldset.review {
+	border: 3px solid #FC0FC0;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+a:link {
+	color : #39c;
+}
+
+a:visited {
+	color : #39c;
+}
+
+hr {
+	 border : 1px solid #FC0FC0;
+}
+
+fieldset.logout_noshape {
+	display : inline-block;
+}
+
+fieldset.logout {
+	display : inline-block;
+	margin:auto;
+	border: 3px solid #39c;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+fieldset.shapeone {
+	display : inline-block;
+	margin:auto;
+	border: 3px solid #39c;
+	padding:12px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+div#alertmessage {
+	color : #FF4500;
+	animation-name: hideAlertMessage;
+    animation-duration: 4800ms;
+    animation-fill-mode: forwards;
+}
+
+table.appeal_table a {
+	color : white;
+}
+
+@keyframes hideAlertMessage {
+  0%{
+    opacity: 1;
+    transform: rotateX(90deg);
+  }
+  50%{
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+  100%{
+    display: none;
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+}

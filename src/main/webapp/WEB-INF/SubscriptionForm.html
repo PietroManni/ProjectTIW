@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Subscription Form</title>
+<link rel="stylesheet" type="text/css" media="all" href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}"/>
+</head>
+<body>
+	<div align="right">
+		<a href="logout" th:href="@{/Logout}"><input type="button" th:value="'Logout'"/></a>
+	</div>
+	<div th:class="'menu'" align="right">
+		<a href="results" th:href="@{/GoToHomeStudent(currentcourse=${course.id})}"><input type="button" th:value="'Go Back to Home'"/></a>
+	</div>
+	<h1 th:class="${'table_title'}"><span th:text="${course.name}"></span></h1>
+	<hr>
+	<h2 th:class="${'table_title'}"><span th:text="'Appeal of ' + ${appeal.date}"></span></h2>
+	<table>
+		<tr>
+			<td>
+				<table border="1">
+					<thead>
+						<tr><th th:text="${course.name}" colspan="2">Default course name</th></tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="'Date'"></td>
+							<td th:text="${appeal.date}"></td>
+						</tr>
+						<tr>
+							<td th:text="'Cfu'"></td>
+							<td th:text="${course.cfu}"></td>
+						</tr>
+						<tr>
+							<td th:text="'Course description'"></td>
+							<td th:text="${course.description}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td>
+				<div>
+					<form th:action="@{/SubscribeToAppeal}" method="POST">
+						<fieldset>
+							<legend>Subscribe to Appeal</legend>
+							<div th:if="${review} == null">
+								<label th:if="${review} == null" for="textarea">Leave a review of the course</label>
+								<textarea th:id="'textarea'" th:name="'coursereview'" placeholder="If you want, please leave a review of the course" maxlength="255" rows="6" cols="50"></textarea>
+								<p th:text="${'Leave a rating for the course'}"></p>
+								<input type="radio" id="radio1" name="vote" th:value="${1}">
+								<label for="radio1" th:text="${1}"></label>
+								<input type="radio" id="radio2" name="vote" th:value="${2}">
+								<label for="radio2" th:text="${2}"></label>
+								<input type="radio" id="radio3" name="vote" th:value="${3}">
+								<label for="radio3" th:text="${3}"></label>
+								<input type="radio" id="radio4" name="vote" th:value="${4}">
+								<label for="radio4" th:text="${4}"></label>
+								<input type="radio" id="radio5" name="vote" th:value="${5}">
+								<label for="radio5" th:text="${5}"></label>
+							</div>
+							<div th:if="${review} != null">
+								<fieldset th:class="${'review'}">
+									<legend><span th:text="'Your review for ' + ${course.name}"></span></legend>
+									<div th:if="${review.review} != null and ${not #strings.isEmpty(review.review)}" th:text="${review.review}"></div>
+									<div th:if="${review.review} == null or ${#strings.isEmpty(review.review)}" th:text="'Your review is empty'"></div>
+								</fieldset>
+								<br>
+								<fieldset th:class="${'review'}">
+									<legend><span th:text="'Your vote for ' + ${course.name}"></span></legend>
+									<div th:if="${review.vote} != null and ${review.vote} != 0">
+										<span  th:text="'Vote: ' + ${review.vote} + '/5'"></span>
+										<meter min="0" max="5" optimum="5" low="2" high="3,75" th:value="${review.vote}"></meter>
+									</div>
+									<div th:if="${review.vote} == null or ${review.vote} == 0" th:text="'You didn\'t submit a vote'"></div>
+								</fieldset>
+								<br>
+							</div>
+							<input type="hidden" name="appealid" th:value="${appeal.id}">
+							<input type="hidden" name="courseid" th:value="${course.id}">
+							<input type="submit" name="submit" th:value="'Subscribe'">
+						</fieldset>
+					</form>
+					<div th:id="${'alertmessage'}" th:if="${alert} == 3" th:text="'Review must be shorter than 255 characters'"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
